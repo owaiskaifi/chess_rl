@@ -5,7 +5,7 @@ import pickle
 import random
 
 class RLAgent:
-    def __init__(self, alpha=0.4, epsilon=1, discount=0.9):
+    def __init__(self, alpha=0.4, epsilon=.4, discount=0.9):
         self.Q = {}
         self.epsilon = epsilon
         self.alpha = alpha

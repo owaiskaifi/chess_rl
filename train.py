@@ -4,7 +4,7 @@ import random
 import pickle
 
 class QLearningAgent:
-    def __init__(self, alpha=0.4, epsilon=1, discount=0.9):
+    def __init__(self, alpha=0.6, epsilon=.8, discount=0.9):
         self.alpha = alpha # learning rate
         self.epsilon = epsilon # exploration rate
         self.discount = discount # discount factor
@@ -93,14 +93,21 @@ class ChessGame:
             while not self.board.is_game_over():
                 if self.board.turn == chess.WHITE:
                     current_agent = self.white_agent
+                    legal_moves = list(self.board.legal_moves)
+                    current_state = self.board.fen()
+                    # action = current_agent.choose_action(current_state, legal_moves)
+                    action =random.choice(legal_moves)
+                    self.board.push(action)
+                    next_state = self.board.fen()
                 else:
                     current_agent = self.black_agent
+                    legal_moves = list(self.board.legal_moves)
+                    current_state = self.board.fen()
+                    action = current_agent.choose_action(current_state, legal_moves)
+                    self.board.push(action)
+                    next_state = self.board.fen()
 
-                legal_moves = list(self.board.legal_moves)
-                current_state = self.board.fen()
-                action = current_agent.choose_action(current_state, legal_moves)
-                self.board.push(action)
-                next_state = self.board.fen()
+                
 
                 if self.board.is_checkmate():
                     if self.board.turn == chess.WHITE:
@@ -111,7 +118,7 @@ class ChessGame:
                         reward = 1.0
                         winner = "white"
                         white_n=white_n+1
-                elif self.board.is_stalemate() or self.board.is_insufficient_material() : #or self.board.is_seventyfive_moves():
+                elif self.board.is_stalemate() or self.board.is_insufficient_material() or self.board.is_seventyfive_moves():
                     reward = 0.0
                     winner = "draw"
                     draw_n=draw_n+1
@@ -144,4 +151,4 @@ white_agent = QLearningAgent()
 black_agent = QLearningAgent()
 
 game = ChessGame(white_agent, black_agent)
-game.play(500)
+game.play(1000)
