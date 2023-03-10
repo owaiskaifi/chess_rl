@@ -82,6 +82,9 @@ class ChessGame:
         self.black_agent = black_agent
 
     def play(self, num_rounds):
+        black_n=0
+        white_n=0
+        draw_n=0
         for i in range(num_rounds):
             print(f"Round {i+1}/{num_rounds}")
 
@@ -103,12 +106,16 @@ class ChessGame:
                     if self.board.turn == chess.WHITE:
                         reward = -1.0
                         winner = "black"
+                        black_n=black_n+1
                     else:
                         reward = 1.0
                         winner = "white"
-                elif self.board.is_stalemate() or self.board.is_insufficient_material() or self.board.is_seventyfive_moves():
+                        white_n=white_n+1
+                elif self.board.is_stalemate() or self.board.is_insufficient_material() : #or self.board.is_seventyfive_moves():
                     reward = 0.0
                     winner = "draw"
+                    draw_n=draw_n+1
+                    
                 else:
                     reward = None
                     winner = None
@@ -116,11 +123,11 @@ class ChessGame:
                 if reward is not None:
                     current_agent.update(current_state, action, reward, next_state)
 
-            self.white_agent.save_model(f"white_agent_round.pkl")
-            self.black_agent.save_model(f"black_agent_round.pkl")
+            self.white_agent.save_model(f"white_agent.pkl")
+            self.black_agent.save_model(f"black_agent.pkl")
 
             print(f"Winner: {winner}")
-
+        print(f"black: {black_n} White: {white_n} Draw: {draw_n}")
 
 
 
@@ -137,4 +144,4 @@ white_agent = QLearningAgent()
 black_agent = QLearningAgent()
 
 game = ChessGame(white_agent, black_agent)
-game.play(50)
+game.play(500)
