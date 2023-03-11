@@ -1,6 +1,6 @@
 import chess
 import pickle
-
+import chess.svg
 
 import random
 
@@ -76,6 +76,10 @@ class ChessGame:
             self.board.push(action)
 
             print(self.board)
+            
+            bb=self.board
+            chess.svg.board(bb,size=350)
+            
             print("")
 
         if self.board.result() == "1-0":

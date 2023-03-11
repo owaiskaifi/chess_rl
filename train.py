@@ -41,46 +41,25 @@ class QLearningAgent:
     def load_model(self, filename):
         with open(filename, 'rb') as f:
             self.q_values = pickle.load(f)
-
-# class ChessGame:
-#     def __init__(self, white_agent, black_agent):
-#         self.board = chess.Board()
-#         self.white_agent = white_agent
-#         self.black_agent = black_agent
-
-#     def play(self):
-#         while not self.board.is_game_over():
-#             print(self.board)
-#             if self.board.turn == chess.WHITE:
-#                 state = self.board.fen()
-#                 legal_actions = [move.uci() for move in self.board.legal_moves]
-#                 action = self.white_agent.choose_action(state, legal_actions)
-#                 move = chess.Move.from_uci(action)
-#                 self.board.push(move)
-#                 print("White agent plays: " + str(move))
-#                 reward = self.get_reward()
-#                 next_state = self.board.fen()
-#                 self.white_agent.update(state, action, reward, next_state)
-#             else:
-#                 state = self.board.fen()
-#                 legal_actions = [move.uci() for move in self.board.legal_moves]
-#                 action = self.black_agent.choose_action(state, legal_actions)
-#                 move = chess.Move.from_uci(action)
-#                 self.board.push(move)
-#                 print("Black agent plays: " + str(move))
-#                 reward = self.get_reward()
-#                 next_state = self.board.fen()
-#                 self.black_agent.update(state, action, reward, next_state)
-
-#         print(self.board.result())
-#         self.white_agent.save_model('white_agent_model.pkl')
-#         self.black_agent.save_model('black_agent_model.pkl')
+ 
 class ChessGame:
     def __init__(self, white_agent, black_agent):
         self.board = chess.Board()
-        self.white_agent = white_agent
-        self.black_agent = black_agent
+        # self.white_agent = white_agent
+              
+        # self.black_agent = black_agent
+        with open( 'white_agent.pkl', "rb") as f:
+            white_model = pickle.load(f)
 
+        agent=QLearningAgent()
+        agent.q_values=white_model 
+        self.white_agent=agent   
+        with open('black_agent.pkl', "rb") as f:
+            black_model = pickle.load(f)
+
+        agent=QLearningAgent()
+        agent.q_values=black_model 
+        self.black_agent=agent    
     def play(self, num_rounds):
         black_n=0
         white_n=0
@@ -151,4 +130,4 @@ white_agent = QLearningAgent()
 black_agent = QLearningAgent()
 
 game = ChessGame(white_agent, black_agent)
-game.play(1000)
+game.play(100)
