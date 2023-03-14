@@ -9,7 +9,7 @@ Requirements
 
 Installation
 
-    Clone this repository: git clone https://github.com/yourusername/Python-Chess-RL-Game.git
+    Clone this repository: git clone [https://github.com/yourusername/Python-Chess-RL-Game.git](https://github.com/owaiskaifi/chess_rl.git)
     Run the training session: python train.py
     Run the test session : python test.py
 
